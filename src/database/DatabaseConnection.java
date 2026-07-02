@@ -13,14 +13,17 @@ public class DatabaseConnection {
     public static Connection getConnection() {
 
         try {
+            // WAJIB ADD INI
+            Class.forName("com.mysql.cj.jdbc.Driver");
+
             return DriverManager.getConnection(URL, USER, PASSWORD);
-        } catch (SQLException e) {
+
+        } catch (Exception e) {
 
             System.out.println("Koneksi database gagal!");
             e.printStackTrace();
 
             return null;
         }
-
     }
 }
