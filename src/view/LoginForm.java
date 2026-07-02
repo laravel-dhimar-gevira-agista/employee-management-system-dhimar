@@ -43,34 +43,36 @@ public class LoginForm extends JFrame {
         btnLogin.setBounds(150, 140, 100, 30);
         add(btnLogin);
 
-        btnLogin.addActionListener(e -> prosesLogin());
-    }
+        // ================= LOGIN ACTION =================
+        btnLogin.addActionListener(e -> {
 
-    private void prosesLogin() {
+            String username = txtUsername.getText();
+            String password = new String(txtPassword.getPassword());
 
-        String username = txtUsername.getText();
-        String password = new String(txtPassword.getPassword());
+            // VALIDASI INPUT
+            if (username.isEmpty() || password.isEmpty()) {
+                JOptionPane.showMessageDialog(this,
+                        "Username dan Password tidak boleh kosong!");
+                return;
+            }
 
-        if (username.isEmpty() || password.isEmpty()) {
-            JOptionPane.showMessageDialog(this,
-                    "Username dan Password tidak boleh kosong!");
-            return;
-        }
+            // PANGGIL SERVICE (TIDAK ADA SQL DI SINI)
+            boolean sukses = LoginService.login(username, password);
 
-        boolean sukses = LoginService.login(username, password);
+            if (sukses) {
+                JOptionPane.showMessageDialog(this,
+                        "Login berhasil!");
 
-        if (sukses) {
-            JOptionPane.showMessageDialog(this, "Login berhasil!");
+                this.dispose(); // tutup login
+                new Dashboard().setVisible(true); // buka dashboard
 
-            this.dispose();
-            new Dashboard().setVisible(true);
-
-        } else {
-            JOptionPane.showMessageDialog(this,
-                    "Username atau Password salah!",
-                    "Error",
-                    JOptionPane.ERROR_MESSAGE);
-        }
+            } else {
+                JOptionPane.showMessageDialog(this,
+                        "Username atau Password salah!",
+                        "Login Gagal",
+                        JOptionPane.ERROR_MESSAGE);
+            }
+        });
     }
 
     public static void main(String[] args) {
